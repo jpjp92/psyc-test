@@ -9,17 +9,17 @@ import { sendMessageToBot } from './services/ruleBasedService'; // 규칙 기반
 import { PSYCH_TESTS } from './constants';
 
 function App() {
-  const [messages, setMessages] = useState<Message[]>([]); 
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to Dark Mode
-  
+
   // Initialize sidebar state based on screen width (SSR safe check)
-  const [isSidebarOpen, setIsSidebarOpen] = useState(() => 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(() =>
     typeof window !== 'undefined' ? window.innerWidth >= 1024 : false
   );
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -57,7 +57,7 @@ function App() {
     if (!messageText || isLoading) return;
 
     if (!text) setInputValue('');
-    
+
     // Add user message
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -72,7 +72,7 @@ function App() {
       // Call Rule-based Bot (No API Cost)
       // returns { text: string, attachment?: ... }
       const response = await sendMessageToBot(messageText);
-      
+
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'model',
@@ -109,61 +109,67 @@ function App() {
 
   return (
     <div className="flex h-screen bg-white dark:bg-[#131314] font-sans text-gray-800 dark:text-gray-200 transition-colors duration-200">
-      
+
       {/* Mobile Sidebar Overlay */}
-      <div 
+      <div
         className={`fixed inset-0 bg-black/50 z-40 lg:hidden backdrop-blur-sm transition-opacity duration-300 ${isSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
         onClick={() => setIsSidebarOpen(false)}
       />
 
       {/* Sidebar */}
-      <aside 
+      <aside
         className={`
           fixed lg:static inset-y-0 left-0 z-50 bg-[#f0f4f9] dark:bg-[#1e1f20] border-r border-gray-200 dark:border-[#444746]/50
           transition-all duration-300 ease-in-out flex flex-col whitespace-nowrap
-          ${isSidebarOpen 
-            ? 'translate-x-0 w-72 opacity-100' 
+          ${isSidebarOpen
+            ? 'translate-x-0 w-72 opacity-100'
             : '-translate-x-full lg:translate-x-0 lg:w-0 lg:opacity-0 lg:border-r-0 lg:overflow-hidden'
           }
         `}
       >
         <div className="h-full flex flex-col w-72">
-          {/* Mobile Only Header (Close Button) */}
-          <div className="flex items-center justify-end px-4 py-4 mb-2 lg:hidden">
-            <button 
+          {/* Mobile Sidebar Header with Brand */}
+          <div className="flex items-center justify-between px-5 py-5 lg:hidden border-b border-gray-200 dark:border-[#444746]/30">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#4285f4] to-[#9b72cb] flex items-center justify-center text-white shadow-sm">
+                <Brain size={18} />
+              </div>
+              <span className="font-bold text-gray-800 dark:text-gray-200 tracking-tight">숲 상담소</span>
+            </div>
+            <button
               onClick={() => setIsSidebarOpen(false)}
-              className="p-1 text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white transition-colors"
+              className="p-2 -mr-1 rounded-full text-gray-400 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-[#333537] hover:text-black dark:hover:text-white transition-all active:scale-90"
               title="닫기"
             >
-              <X size={24} />
+              <X size={22} />
             </button>
           </div>
-          
+
           {/* Sidebar Content - Reduced top padding for Desktop to move QuickMenu up */}
           <div className="flex-1 overflow-y-auto pr-1 custom-scrollbar lg:pt-2">
-             {/* Use QuickMenu component but adjusted for this context via its own styles */}
-             <QuickMenu />
-             
-             {/* Simplified Tip Section */}
-             <div className="mt-4 px-4 py-3 bg-white dark:bg-[#28292a] rounded-xl border border-gray-200 dark:border-[#444746] text-[#0b57d0] dark:text-[#a8c7fa] text-sm mx-4 shadow-sm dark:shadow-none">
-                <p className="font-semibold mb-1 flex items-center gap-2 text-xs">
-                  <Sparkles size={12} /> 이용 팁
-                </p>
-                <p className="opacity-80 text-xs leading-relaxed text-gray-600 dark:text-gray-300 whitespace-normal break-keep">
-                  궁금한 검사명을 입력하면 상세 정보를 안내해 드려요.
-                </p>
-             </div>
+            {/* Use QuickMenu component but adjusted for this context via its own styles */}
+            <QuickMenu />
+
+            {/* Simplified Tip Section */}
+            <div className="mt-4 px-4 py-3 bg-white dark:bg-[#28292a] rounded-xl border border-gray-200 dark:border-[#444746] text-[#0b57d0] dark:text-[#a8c7fa] text-sm mx-4 shadow-sm dark:shadow-none">
+              <p className="font-semibold mb-1 flex items-center gap-2 text-xs">
+                <Sparkles size={12} /> 이용 팁
+              </p>
+              <p className="opacity-80 text-xs leading-relaxed text-gray-600 dark:text-gray-300 whitespace-normal break-keep">
+                궁금한 검사명을 입력하면 상세 정보를 안내해 드려요.
+              </p>
+            </div>
           </div>
         </div>
       </aside>
 
       {/* Main Chat Area */}
       <main className="flex-1 flex flex-col h-full relative bg-white dark:bg-[#131314] overflow-hidden transition-colors duration-200">
-        
+
         {/* Header (Desktop: Minimal / Mobile: Visible) */}
         <header className="h-14 flex items-center justify-between px-4 lg:px-6 z-10 sticky top-0 bg-white/90 dark:bg-[#131314]/90 backdrop-blur-md transition-colors duration-200">
           <div className="flex items-center gap-3">
-            <button 
+            <button
               onClick={toggleSidebar}
               className="p-2 -ml-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-[#333537] hover:text-black dark:hover:text-white transition-colors"
               title={isSidebarOpen ? "사이드바 접기" : "사이드바 펼치기"}
@@ -171,10 +177,10 @@ function App() {
               <Menu size={24} />
             </button>
             <div className="font-medium text-gray-700 dark:text-gray-200">
-               숲 상담소
+              숲 상담소
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             <button
               onClick={toggleTheme}
@@ -183,7 +189,7 @@ function App() {
             >
               {isDarkMode ? <Sun size={22} /> : <Moon size={22} />}
             </button>
-            <button 
+            <button
               onClick={() => setIsInfoOpen(true)}
               className="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-[#333537] transition-colors"
               title="사용법 보기"
@@ -195,48 +201,48 @@ function App() {
 
         {/* Content Area */}
         <div className="flex-1 overflow-y-auto p-0 custom-scrollbar scroll-smooth relative">
-          
+
           {messages.length === 0 ? (
             /* Welcome Screen (Gemini Style) */
             <div className="h-full flex flex-col items-center justify-center px-4 pb-20">
-               <div className="w-full max-w-4xl space-y-6 md:space-y-8">
-                 
-                 {/* Greeting */}
-                 <div className="space-y-1 md:space-y-2">
-                   <h2 className="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight">
-                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570]">
-                       반가워요,
-                     </span>
-                   </h2>
-                   <h2 className="text-3xl md:text-5xl lg:text-6xl font-semibold text-[#c4c7c5] dark:text-[#444746]">
-                     무엇을 도와드릴까요?
-                   </h2>
-                 </div>
+              <div className="w-full max-w-4xl space-y-6 md:space-y-8">
 
-                 {/* Suggestion Chips (Gemini Style Cards) */}
-                 {/* Mobile: grid-cols-2 for 2x2 layout, Desktop: grid-cols-4 */}
-                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-                   {PSYCH_TESTS.map((test) => {
-                     const Icon = iconMap[test.icon];
-                     return (
-                       <button
-                         key={test.id}
-                         onClick={() => handleChipClick(test.url)}
-                         className="text-left p-3 md:p-4 rounded-xl bg-[#f0f4f9] dark:bg-[#1e1f20] hover:bg-[#e2e7eb] dark:hover:bg-[#333537] transition-all duration-200 group h-32 md:h-36 flex flex-col justify-between border border-transparent hover:border-gray-200 dark:hover:border-[#444746]"
-                       >
-                         <div className="bg-white dark:bg-[#333537] w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[#0b57d0] dark:text-[#a8c7fa] group-hover:bg-[#fff] dark:group-hover:bg-[#444746] transition-colors shadow-sm dark:shadow-none">
-                           <Icon className="w-4 h-4 md:w-5 md:h-5" />
-                         </div>
-                         <div>
-                           <div className="font-medium text-gray-800 dark:text-gray-200 mb-0.5 text-sm md:text-base">{test.name}</div>
-                           <div className="text-[10px] md:text-xs text-gray-600 dark:text-gray-500 line-clamp-2 leading-tight">{test.description}</div>
-                         </div>
-                       </button>
-                     );
-                   })}
-                 </div>
+                {/* Greeting */}
+                <div className="space-y-1 md:space-y-2">
+                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-semibold tracking-tight">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570]">
+                      반가워요,
+                    </span>
+                  </h2>
+                  <h2 className="text-3xl md:text-5xl lg:text-6xl font-semibold text-[#c4c7c5] dark:text-[#444746]">
+                    무엇을 도와드릴까요?
+                  </h2>
+                </div>
 
-               </div>
+                {/* Suggestion Chips (Gemini Style Cards) */}
+                {/* Mobile: grid-cols-2 for 2x2 layout, Desktop: grid-cols-4 */}
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                  {PSYCH_TESTS.map((test) => {
+                    const Icon = iconMap[test.icon];
+                    return (
+                      <button
+                        key={test.id}
+                        onClick={() => handleChipClick(test.url)}
+                        className="text-left p-3 md:p-4 rounded-xl bg-[#f0f4f9] dark:bg-[#1e1f20] hover:bg-[#e2e7eb] dark:hover:bg-[#333537] transition-all duration-200 group h-32 md:h-36 flex flex-col justify-between border border-transparent hover:border-gray-200 dark:hover:border-[#444746]"
+                      >
+                        <div className="bg-white dark:bg-[#333537] w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[#0b57d0] dark:text-[#a8c7fa] group-hover:bg-[#fff] dark:group-hover:bg-[#444746] transition-colors shadow-sm dark:shadow-none">
+                          <Icon className="w-4 h-4 md:w-5 md:h-5" />
+                        </div>
+                        <div>
+                          <div className="font-medium text-gray-800 dark:text-gray-200 mb-0.5 text-sm md:text-base">{test.name}</div>
+                          <div className="text-[10px] md:text-xs text-gray-600 dark:text-gray-500 line-clamp-2 leading-tight">{test.description}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+              </div>
             </div>
           ) : (
             /* Chat Messages */
@@ -279,8 +285,8 @@ function App() {
                 onClick={() => handleSendMessage()}
                 disabled={!inputValue.trim() || isLoading}
                 className={`absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full transition-all duration-200
-                  ${!inputValue.trim() || isLoading 
-                    ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed' 
+                  ${!inputValue.trim() || isLoading
+                    ? 'text-gray-400 dark:text-gray-500 cursor-not-allowed'
                     : 'text-white bg-[#0b57d0] dark:bg-[#a8c7fa]/20 dark:text-white dark:hover:bg-[#a8c7fa] dark:hover:text-[#0b57d0] hover:bg-[#0b57d0]/90'
                   }`}
               >

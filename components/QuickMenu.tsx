@@ -11,14 +11,14 @@ const iconMap: Record<string, React.ReactNode> = {
 
 const QuickMenu: React.FC = () => {
   return (
-    <div className="bg-[#f0f4f9] dark:bg-[#1e1f20] rounded-xl overflow-hidden h-fit sticky top-4 border border-transparent dark:border-none">
-      <div className="bg-[#f0f4f9] dark:bg-[#1e1f20] px-4 py-3 border-b border-gray-200 dark:border-[#444746]">
-        <h3 className="font-bold text-gray-700 dark:text-gray-200 flex items-center gap-2 text-sm">
-           <Zap size={16} className="text-yellow-500 dark:text-yellow-400 fill-yellow-500/20 dark:fill-yellow-400/20" /> 바로가기
+    <div className="overflow-hidden">
+      <div className="px-5 py-4 border-b border-gray-200 dark:border-[#444746]/30">
+        <h3 className="font-bold text-gray-800 dark:text-gray-200 flex items-center gap-2 text-sm">
+          <Zap size={16} className="text-yellow-500 dark:text-yellow-400 fill-yellow-500/10 dark:fill-yellow-400/10" /> 바로가기
         </h3>
         <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5 ml-6">추천 심리 검사 모음</p>
       </div>
-      <div className="p-2 space-y-1">
+      <div className="p-3 space-y-1">
         {PSYCH_TESTS.map((test) => (
           <a
             key={test.id}
