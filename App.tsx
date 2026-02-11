@@ -108,7 +108,7 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen bg-white dark:bg-[#131314] font-sans text-gray-800 dark:text-gray-200 transition-colors duration-200">
+    <div className="flex h-[100dvh] bg-white dark:bg-[#131314] font-sans text-gray-800 dark:text-gray-200 transition-colors duration-200 overflow-hidden">
 
       {/* Mobile Sidebar Overlay */}
       <div
@@ -127,7 +127,7 @@ function App() {
           }
         `}
       >
-        <div className="h-full flex flex-col w-72">
+        <div className="h-full flex flex-col w-72 pt-[env(safe-area-inset-top)]">
           {/* Mobile Sidebar Header with Brand */}
           <div className="flex items-center justify-between px-5 py-5 lg:hidden border-b border-gray-200 dark:border-[#444746]/30">
             <div className="flex items-center gap-2">
@@ -167,7 +167,7 @@ function App() {
       <main className="flex-1 flex flex-col h-full relative bg-white dark:bg-[#131314] overflow-hidden transition-colors duration-200">
 
         {/* Header (Desktop: Minimal / Mobile: Visible) */}
-        <header className="h-14 flex items-center justify-between px-4 lg:px-6 z-10 sticky top-0 bg-white/90 dark:bg-[#131314]/90 backdrop-blur-md transition-colors duration-200">
+        <header className="h-14 lg:h-16 flex items-center justify-between px-4 lg:px-6 z-10 sticky top-0 bg-white/90 dark:bg-[#131314]/90 backdrop-blur-md transition-colors duration-200 pt-[env(safe-area-inset-top)] box-content">
           <div className="flex items-center gap-3">
             <button
               onClick={toggleSidebar}
