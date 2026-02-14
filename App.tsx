@@ -13,7 +13,7 @@ function App() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(true); // Default to Dark Mode
+  const [isDarkMode, setIsDarkMode] = useState(false); // Default to Light Mode
 
   // Initialize sidebar state based on screen width (SSR safe check)
   const [isSidebarOpen, setIsSidebarOpen] = useState(() =>
