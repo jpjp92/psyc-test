@@ -170,7 +170,7 @@ function App() {
       <main className="flex-1 flex flex-col h-full relative bg-white dark:bg-[#131314] overflow-hidden transition-colors duration-200">
 
         {/* Header (Desktop: Minimal / Mobile: Visible) */}
-        <header className="z-20 sticky top-0 bg-white/90 dark:bg-[#131314]/90 backdrop-blur-md transition-colors duration-200 border-b border-gray-100 dark:border-[#444746]/10">
+        <header className="z-20 sticky top-0 bg-white/90 dark:bg-[#131314]/90 backdrop-blur-md transition-colors duration-200">
           {/* Safe Area Spacer */}
           <div className="h-[env(safe-area-inset-top,0px)]" />
 
@@ -212,7 +212,7 @@ function App() {
 
           {messages.length === 0 ? (
             /* Welcome Screen (Gemini Style) */
-            <div className="h-full flex flex-col items-center justify-center px-4 pb-20">
+            <div className="h-full flex flex-col items-center justify-start pt-12 md:justify-center md:pt-0 px-4 pb-20">
               <div className="w-full max-w-4xl space-y-6 md:space-y-8">
 
                 {/* Greeting */}
