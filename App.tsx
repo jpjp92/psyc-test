@@ -137,7 +137,7 @@ function App() {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#4285f4] to-[#9b72cb] flex items-center justify-center text-white shadow-sm">
                 <Brain size={18} />
               </div>
-              <span className="font-bold text-gray-800 dark:text-gray-200 tracking-tight">숲 상담소</span>
+              <span className="font-bold text-gray-800 dark:text-gray-200 tracking-tight">숨 상담소</span>
             </div>
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -184,7 +184,7 @@ function App() {
                 <Menu size={24} />
               </button>
               <div className="font-medium text-gray-700 dark:text-gray-200">
-                숲 상담소
+                숨 상담소
               </div>
             </div>
 
