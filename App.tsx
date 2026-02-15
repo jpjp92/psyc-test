@@ -236,14 +236,14 @@ function App() {
                       <button
                         key={test.id}
                         onClick={() => handleChipClick(test.url)}
-                        className="text-left p-3 md:p-4 rounded-xl bg-[#f0f4f9] dark:bg-[#1e1f20] hover:bg-[#e2e7eb] dark:hover:bg-[#333537] transition-all duration-200 group h-32 md:h-36 flex flex-col justify-between border border-transparent hover:border-gray-200 dark:hover:border-[#444746]"
+                        className="text-left p-2.5 md:p-4 rounded-xl bg-[#f0f4f9] dark:bg-[#1e1f20] hover:bg-[#e2e7eb] dark:hover:bg-[#333537] transition-all duration-200 group h-32 md:h-36 flex flex-col justify-between border border-transparent hover:border-gray-200 dark:hover:border-[#444746]"
                       >
                         <div className="bg-white dark:bg-[#333537] w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-[#0b57d0] dark:text-[#a8c7fa] group-hover:bg-[#fff] dark:group-hover:bg-[#444746] transition-colors shadow-sm dark:shadow-none">
                           <Icon className="w-4 h-4 md:w-5 md:h-5" />
                         </div>
                         <div>
-                          <div className="font-medium text-gray-800 dark:text-gray-200 mb-0.5 text-sm md:text-base">{test.name}</div>
-                          <div className="text-[10px] md:text-xs text-gray-600 dark:text-gray-500 line-clamp-2 leading-tight">{test.description}</div>
+                          <div className="font-semibold text-gray-800 dark:text-gray-200 mb-0.5 text-[13px] md:text-base leading-snug">{test.name}</div>
+                          <div className="text-[9px] md:text-xs text-gray-600 dark:text-gray-500 line-clamp-2 leading-tight">{test.description}</div>
                         </div>
                       </button>
                     );
