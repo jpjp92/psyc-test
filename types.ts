@@ -4,7 +4,7 @@ export interface Message {
   text: string;
   timestamp: number;
   attachment?: {
-    type: 'mbti' | 'multi-iq';
+    type: 'mbti' | 'multi-iq' | 'htp' | 'smartphone';
     data: any[];
   };
 }
