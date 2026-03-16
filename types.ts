@@ -4,7 +4,7 @@ export interface Message {
   text: string;
   timestamp: number;
   attachment?: {
-    type: 'mbti' | 'multi-iq' | 'htp' | 'smartphone';
+    type: 'mbti' | 'multi-iq' | 'htp' | 'smartphone' | 'mbti-jobs';
     data: any[];
   };
 }
@@ -33,4 +33,11 @@ export interface MultiIqInfo {
   name: string;
   description: string;
   jobs: string;
+}
+
+export interface MbtiJobInfo {
+  code: string;
+  alias: string;
+  emoji: string;
+  jobs: string[];
 }

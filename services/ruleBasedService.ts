@@ -1,10 +1,10 @@
-import { PSYCH_TESTS, MBTI_DATA, MULTI_IQ_DATA, HTP_DATA, SMARTPHONE_DATA } from '../constants';
+import { PSYCH_TESTS, MBTI_DATA, MULTI_IQ_DATA, HTP_DATA, SMARTPHONE_DATA, MBTI_JOBS_DATA } from '../constants';
 
 // 응답 타입 변경 (텍스트 + 선택적 첨부 데이터)
 type BotResponse = {
   text: string;
   attachment?: {
-    type: 'mbti' | 'multi-iq' | 'htp' | 'smartphone';
+    type: 'mbti' | 'multi-iq' | 'htp' | 'smartphone' | 'mbti-jobs';
     data: any[];
   };
 };
@@ -86,14 +86,59 @@ const parseMbtiData = () => {
   });
 };
 
+// MBTI 추천 직업 데이터 파싱 헬퍼
+const parseMbtiJobData = () => {
+  return Object.entries(MBTI_JOBS_DATA).map(([code, jobsStr]) => {
+    const rawData = MBTI_DATA[code];
+    const match = rawData.match(/\((.*?)\)\s*(.*?):\s*(.*)/);
+    const alias = match ? match[1] : '';
+    const emoji = match ? match[2] : '';
+    const description = match ? `${match[2]} : ${match[3]}` : rawData;
+    const jobs = jobsStr.split(',').map(j => j.trim());
+    return { code, alias, emoji, description, jobs };
+  });
+};
+
 export const sendMessageToBot = async (message: string): Promise<BotResponse> => {
   const delay = Math.random() * 500 + 300;
   await new Promise(resolve => setTimeout(resolve, delay));
 
   const text = message.toLowerCase();
 
-  // --- 1. 특정 MBTI 유형 질문 확인 (예: "ISTJ 특징 알려줘") ---
+  // --- 0. MBTI 추천 직업 질문 확인 (예: "ENFP 추천 직업", "MBTI 추천 직업") ---
+  const jobKeywords = ['추천 직업', '추천직업', '직업', '일', '진로'];
   const mbtiTypes = Object.keys(MBTI_DATA);
+  
+  if (jobKeywords.some(k => text.includes(k))) {
+    const foundType = mbtiTypes.find(type => text.toUpperCase().includes(type));
+    
+    if (foundType) {
+      const rawData = MBTI_DATA[foundType];
+      const match = rawData.match(/\((.*?)\)\s*(.*?):/);
+      const jobs = MBTI_JOBS_DATA[foundType].split(',').map(j => j.trim());
+      
+      const data = [{
+        code: foundType,
+        alias: match ? match[1] : '',
+        emoji: match ? match[2] : '',
+        description: match ? `${match[2]} : ${rawData.split('): ')[1]}` : rawData,
+        jobs
+      }];
+      
+      return {
+        text: `**${foundType}** 유형에게 추천하는 직업입니다.`,
+        attachment: { type: 'mbti-jobs', data }
+      };
+    } else {
+      // 특정 유형 없이 "MBTI 추천 직업" 등 질문 시 전체 목록 반환
+      return {
+        text: `MBTI 유형별 추천 직업 목록입니다. 당신에게 어울리는 직업을 확인해보세요!`,
+        attachment: { type: 'mbti-jobs', data: parseMbtiJobData() }
+      };
+    }
+  }
+
+  // --- 1. 특정 MBTI 유형 질문 확인 (예: "ISTJ 특징 알려줘") ---
   const foundType = mbtiTypes.find(type => text.toUpperCase().includes(type));
 
   if (foundType) {
@@ -110,6 +155,9 @@ export const sendMessageToBot = async (message: string): Promise<BotResponse> =>
       attachment: { type: 'mbti', data }
     };
   }
+
+  // ... (rest of the file remains the same)
+
 
   // --- 2. 다중지능 처리 로직 ---
   const multiKeywords = ['지능', '재능', '강점', '적성', 'iq', '아이큐', '진로', '직업', '다중'];

@@ -126,6 +126,29 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
     </div>
   );
 
+  // 렌더링: MBTI 추천 직업 카드
+  const renderMbtiJobCard = (item: any, index: number) => (
+    <div key={index} className="bg-white dark:bg-[#1e1f20] border border-gray-200 dark:border-[#444746] rounded-xl p-4 flex flex-col gap-3 w-full hover:bg-gray-50 dark:hover:bg-[#28292a] transition-colors shadow-sm h-full">
+      <div>
+        <h4 className="text-[#0b57d0] dark:text-[#a8c7fa] font-bold text-base mb-1">{item.code}</h4>
+        <p className="text-gray-700 dark:text-gray-300 text-xs break-keep">{item.description}</p>
+      </div>
+      <div className="bg-[#f0f4f9] dark:bg-[#131314] rounded-lg p-3 mt-auto">
+        <div className="flex items-center gap-1.5 text-gray-500 dark:text-gray-400 mb-1.5">
+          <Briefcase size={12} />
+          <span className="text-[10px] font-bold uppercase tracking-wider">추천 직업</span>
+        </div>
+        <p className="text-gray-600 dark:text-gray-400 text-[11px] leading-relaxed break-keep">
+          {item.jobs.join(', ')}
+        </p>
+      </div>
+    </div>
+  );
+
+
+
+
+
   return (
     <div className={`flex w-full mb-6 ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
@@ -179,6 +202,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
               }
               {message.attachment.type === 'smartphone' &&
                 message.attachment.data.map((item, idx) => renderSmartphoneCard(item, idx))
+              }
+              {message.attachment.type === 'mbti-jobs' &&
+                message.attachment.data.map((item, idx) => renderMbtiJobCard(item, idx))
               }
             </div>
           </div>
